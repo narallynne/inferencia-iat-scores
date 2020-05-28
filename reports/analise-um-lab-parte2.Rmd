@@ -5,7 +5,7 @@ output:
     df_print: paged
 theme: sandstone
 params: 
-    arquivo_dados: "data/sdsu .csv"
+    arquivo_dados: "data/brasilia .csv"
 ---
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -35,7 +35,6 @@ iat = iat %>%
     mutate(sex = factor(sex, levels = c("m", "f"), ordered = TRUE))
 glimpse(iat)
 ```
-
 ```{r}
 iat %>%
     ggplot(aes(x = d_art, fill = sex, color = sex)) +
@@ -66,7 +65,7 @@ iat %>%
 ```{r}
 iat %>% 
     group_by(sex) %>% 
-    summarise(media = mean(d_art))
+    summarise(media = mean(d_art), desviop = sd(d_art), N = length(sex))
 ```
 
 
@@ -78,7 +77,6 @@ agrupado = iat %>%
     f = agrupado %>% filter(sex == "f") %>% pull(media)
 m - f
 ```
-
 
 #### Comparação via ICs
 
@@ -106,6 +104,9 @@ ci = tidy(booted,
 
 glimpse(ci)
 ```
+
+
+
 
 ```{r}
 ci %>%
@@ -135,7 +136,7 @@ p2 = ci %>%
         ymax = conf.high
     )) +
     geom_pointrange() +
-    geom_point(size = 3) + 
+    geom_point(size = 3) +
     ylim(-1, 1) + 
     labs(x = "Diferença", 
          y = "IAT homens - mulheres")
@@ -146,7 +147,7 @@ grid.arrange(p1, p2, ncol = 2)
 
 ### Conclusão
 
-Em média, as mulheres que participaram do experimento tiveram uma associação implícita (medida pelo IAT) com a matemárica **positiva/negativa** e **fraca/média/forte** (média XXX, desv. padrão YYY, N = ZZZ). Homens tiveram uma associação **positiva/negativa** com a matemática, portanto **maior/menor** que a das mulheres (média , desv. padrão, N = ). Houve portanto uma **grande/considerável/pequena** diferença entre homens e mulheres (diferença das médias XXXX, 95% CI [CCC, DDD]). A partir desta amostra, estimamos que...
+Em média, as mulheres que participaram do experimento tiveram uma associação implícita (medida pelo IAT) com a matemática *negativa* e *média* (média 0.5703113, desv. padrão 0.4229594, N = 65). Homens tiveram uma associação *negativa* com a matemática, todavia *maior* que a das mulheres (média 0.3997566, desv. padrão 0.5162869, N = 48). Houve então uma *pequena* diferença entre homens e mulheres (diferença das médias -0.1705546, 95% CI [-0.3430, 0.0093]). A partir desta amostra, estimamos que: (i) mulheres podem ter uma associação negativa forte; (ii) que pode não haver diferença entre sexos ou; (iii) que há uma possibilidade de homens terem associações negativas um pouco mais fortes ou moderadamente mais fortes para a matemática.
 
 --- 
 *Exemplos de possíveis conclusões para completar*
